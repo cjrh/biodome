@@ -9,6 +9,6 @@ python:
   - "nightly" # currently points to 3.7-dev
 # command to run tests
 install: pip install pytest pytest-cov codeclimate-test-reporter
-script: PYTHONPATH=. py.test
+script: PYTHONPATH=. py.test --cov=biodome tests/
 after-success:
     - CODECLIMATE_REPO_TOKEN=f185ef058cf364484bde982a831b9991231cd03315aab90ad90549915d0dea3b codeclimate-test-reporter
