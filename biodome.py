@@ -10,7 +10,7 @@ import logging
 import ast
 
 
-__version__ = '2017.6.2'
+__version__ = '2017.6.3'
 logger = logging.getLogger(__name__)
 
 
