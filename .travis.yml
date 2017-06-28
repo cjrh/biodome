@@ -10,4 +10,4 @@ python:
   - "nightly" # currently points to 3.7-dev
 # command to run tests
 install: pip install pytest
-script: PYTHONPATH=. pytest
+script: PYTHONPATH=. py.test

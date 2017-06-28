@@ -1,4 +1,9 @@
-biodome
+.. image:: https://img.shields.io/badge/stdlib--only-yes-green.svg
+    :target: https://img.shields.io/badge/stdlib--only-yes-green.svg
+
+.. image:: https://travis-ci.org/cjrh/biodome.svg?branch=master
+    :target: https://travis-ci.org/cjrh/biodomebiodome
+
 =======
 
 *Controlled environments*
