@@ -15,10 +15,11 @@ logger = logging.getLogger(__name__)
 
 def biodome(name, default=None, cast=None):
     # type: (str, Any, Callable) -> Any
-    raw_value = os.environ.get(name).strip()
-    print(raw_value)
+    raw_value = os.environ.get(name)
     if raw_value is None:
         return default
+
+    raw_value = raw_value.strip()
 
     # Use the same type as default as the cast
     type_ = cast or type(default)

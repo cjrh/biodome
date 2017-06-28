@@ -3,6 +3,14 @@ import pytest
 from biodome import biodome
 
 
+def test_missing():
+    assert biodome('BLAH') is None
+
+
+def test_missing_default():
+    assert biodome('BLAH', None) is None
+
+
 @pytest.mark.parametrize('name,default,setting,result', [
     ('X', 2, '123', 123),
     ('X', '2', '123', '123'),
