@@ -1,4 +1,5 @@
 import os
+import sys
 import pytest
 from biodome import biodome
 
@@ -74,9 +75,6 @@ def test_missing_default():
     ('X', [], '[blah]', []),
     ('X', [], '["blah"]', ['blah']),
 
-    ('X', {1, 2, 3}, '{1, 2}', {1, 2}),
-    ('X', {1, 2, 3}, '{"1":2}', {1, 2, 3}),
-
     ('X', (1, 2), 'blah', (1, 2)),
     ('X', (), 'blah', ()),
     ('X', (), '(1, 2)', (1, 2)),
@@ -86,12 +84,21 @@ def test_missing_default():
     ('X', (), '(1,)', (1,)),
 
     ('X', '0', '1.053', '1.053'),
-
 ])
 def test_param(name, default, setting, result):
     os.environ[name] = str(setting)
     assert biodome(name, default) == result
 
+
+@pytest.mark.skipif(sys.version_info < (3, 0), reason="requires Python 3+")
+@pytest.mark.parametrize('name,default,setting,result', [
+    ('X', {1, 2, 3}, '{1, 2}', {1, 2}),
+    ('X', {1, 2, 3}, '{"1":2}', {1, 2, 3}),
+])
+def test_param(name, default, setting, result):
+    """ast.literal_eval is only supported in Python 3"""
+    os.environ[name] = str(setting)
+    assert biodome(name, default) == result
 
 @pytest.mark.parametrize('name,cast,setting,result', [
     ('X', bool, 'blah', False),

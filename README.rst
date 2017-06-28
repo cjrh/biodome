@@ -43,7 +43,7 @@ how to cast the input value.  This works for the following types:
 - ``str``
 - ``list``
 - ``dict``
-- ``set``
+- ``set`` (**NOTE**: only supported in Python 3+ due to ``ast.literal_eval()``)
 - ``tuple``
 
 For the containers, we use ``ast.literal_eval()`` which is much safer than
