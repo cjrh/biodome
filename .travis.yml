@@ -6,5 +6,11 @@ python:
   - "3.6"
   - "nightly" # currently points to 3.7-dev
 # command to run tests
-install: pip install pytest pytest-cov
-script: PYTHONPATH=. py.test
+install:
+    - "pip install pytest"
+    - "pip install pytest-cov"
+    - "pip install coveralls"
+script:
+    PYTHONPATH=. py.test --cov biodome tests/
+after_success:
+    coveralls
