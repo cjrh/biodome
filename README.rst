@@ -17,7 +17,7 @@ to defaults in a sane way. Typical usage looks like this:
    MY_VAR = biodome('MY_VAR', 123)
 
 In this case, the output ``MY_VAR`` will be created from the environment
-variable *MY_VAR*.
+variable *MY_VAR*:
 
 - If the env var *MY_VAR* doesn't exist, the result will be the default value
   of ``123``.
