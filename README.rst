@@ -1,6 +1,8 @@
 biodome
 =======
 
+*Controlled environments*
+
 Reading environment variables with ``os.environ`` is pretty easy, but after
 a while one gets pretty tired of having to cast variables to the right types
 and handling fallback to defaults.
