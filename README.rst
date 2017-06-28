@@ -4,6 +4,7 @@
 .. image:: https://travis-ci.org/cjrh/biodome.svg?branch=master
     :target: https://travis-ci.org/cjrh/biodomebiodome
 
+biodome
 =======
 
 *Controlled environments*
