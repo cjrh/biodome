@@ -5,7 +5,7 @@
     :target: https://travis-ci.org/cjrh/biodomebiodome
 
 .. image:: https://coveralls.io/repos/github/cjrh/biodome/badge.svg?branch=master
-:target: https://coveralls.io/github/cjrh/biodome?branch=master
+    :target: https://coveralls.io/github/cjrh/biodome?branch=master
 
 biodome
 =======
