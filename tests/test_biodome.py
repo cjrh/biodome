@@ -85,7 +85,7 @@ def test_missing_default():
 
     ('X', '0', '1.053', '1.053'),
 ])
-def test_param(name, default, setting, result):
+def test_param_set(name, default, setting, result):
     os.environ[name] = str(setting)
     assert biodome(name, default) == result
 
@@ -124,15 +124,19 @@ def test_param(name, default, setting, result):
     ('X', list, '1', None),
     ('X', list, '[1]', [1]),
 
-    ('X', set, '{2}', {2}),
-
     ('X', dict, '{"a": 123}', dict(a=123)),
-
 ])
 def test_cast(name, cast, setting, result):
     os.environ[name] = str(setting)
     assert biodome(name, cast=cast) == result
 
+@pytest.mark.skipif(sys.version_info < (3, 0), reason="requires Python 3+")
+@pytest.mark.parametrize('name,cast,setting,result', [
+    ('X', set, '{2}', {2}),
+])
+def test_cast_set(name, cast, setting, result):
+    os.environ[name] = str(setting)
+    assert biodome(name, cast=cast) == result
 
 @pytest.mark.parametrize('name,default,setting,result', [
     ('X', [], 'list(1,2,3)', [1, 2, 3]),
