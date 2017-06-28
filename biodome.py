@@ -7,9 +7,10 @@ Controlled environments.
 """
 import os
 import logging
+import ast
 
 
-__version__ = '2017.6.0'
+__version__ = '2017.6.1'
 logger = logging.getLogger(__name__)
 
 
@@ -32,7 +33,7 @@ def biodome(name, default=None, cast=None):
 
     try:
         if type_ in (dict, list, set, tuple):
-            raw_value = eval(raw_value)
+            raw_value = ast.literal_eval(raw_value)
             return (type(raw_value) == type_ and raw_value) or default
         return type_(raw_value)
     except:

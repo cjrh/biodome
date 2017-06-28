@@ -118,12 +118,22 @@ def test_param(name, default, setting, result):
     ('X', list, '[1]', [1]),
 
     ('X', set, '{2}', {2}),
-    ('X', set, 'set([1, 2, 3])', {1, 2, 3}),
 
     ('X', dict, '{"a": 123}', dict(a=123)),
-    ('X', dict, 'dict(a=123)', dict(a=123)),
 
 ])
 def test_cast(name, cast, setting, result):
     os.environ[name] = str(setting)
     assert biodome(name, cast=cast) == result
+
+
+@pytest.mark.parametrize('name,default,setting,result', [
+    ('X', [], 'list(1,2,3)', [1, 2, 3]),
+    ('X', set(), 'set([2])', {2}),
+    ('X', {}, 'dict(a=1)', {"a": 1}),
+])
+def test_noeval(name, default, setting, result):
+    """Verify that no code evaluation occurs"""
+    os.environ[name] = str(setting)
+    assert biodome(name, default=default) != result
+    assert biodome(name, default=default) == default

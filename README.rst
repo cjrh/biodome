@@ -46,9 +46,9 @@ how to cast the input value.  This works for the following types:
 - ``set``
 - ``tuple``
 
-For the containers, the ``eval()`` function is used. This might be a security
-risk if you don't have control over how your environment variables are set.
-It would be possible to add a flag to disable ``eval()``: PRs welcome.
+For the containers, we use ``ast.literal_eval()`` which is much safer than
+using ``eval()`` because code is not evaluated. Safety first! (thanks to
+@nickdirienzo for the tip)
 
 The default can also be a bool, i.e., ``True`` or ``False``. In this case, the
 following values, **and** their upper- or mixed-case equivalents will be
