@@ -94,7 +94,7 @@ def test_param_set(name, default, setting, result):
     assert biodome.biodome(name, default) == result
 
 
-@pytest.mark.skipif(PY2, 0), reason="requires Python 3+")
+@pytest.mark.skipif(PY2, reason="requires Python 3+")
 @pytest.mark.parametrize('name,default,setting,result', [
     ('X', {1, 2, 3}, '{1, 2}', {1, 2}),
     ('X', {1, 2, 3}, '{"1":2}', {1, 2, 3}),
