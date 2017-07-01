@@ -180,13 +180,14 @@ def test_environ_int():
 
 def test_environ_types():
     assert not os.environ.get('blah')
-    biodome.environ['blah'] = dict(a=1, b=2, c=[1, 2, {1, 2}])
+    biodome.environ['blah'] = dict(a=[1, 2, {1}])
 
     # Both ways work
-    assert os.environ['blah'] == "{'a': 1, 'b': 2, 'c': [1, 2, {1, 2}]}"
-    assert biodome.environ['blah'] == "{'a': 1, 'b': 2, 'c': [1, 2, {1, 2}]}"
+    assert os.environ['blah'] == "{'a': [1, 2, {1}]}"
+    assert biodome.environ['blah'] == "{'a': [1, 2, {1}]}"
 
     # NOTE: we get an int out because the default is type int
+    biodome.environ['blah'] = dict(a=1, b=2, c=[1, 2, {1, 2}])
     assert biodome.environ.get('blah', default={}) == dict(a=1, b=2, c=[1, 2, {1, 2}])
 
     del biodome.environ['blah']
