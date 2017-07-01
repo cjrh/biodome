@@ -48,7 +48,6 @@ def biodome(name, default=None, cast=None):
 
 class _Environ(UserDict):
     def __init__(self, *args, **kwargs):
-        super(_Environ, self).__init__(*args, **kwargs)
         self.data = os.environ
 
     def get(self, key, default=None, cast=None):
