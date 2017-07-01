@@ -2,14 +2,15 @@ import os
 import sys
 import pytest
 from biodome import biodome
+import biodome
 
 
 def test_missing():
-    assert biodome('BLAH') is None
+    assert biodome.biodome('BLAH') is None
 
 
 def test_missing_default():
-    assert biodome('BLAH', None) is None
+    assert biodome.biodome('BLAH', None) is None
 
 
 @pytest.mark.parametrize('name,default,setting,result', [
@@ -87,7 +88,7 @@ def test_missing_default():
 ])
 def test_param_set(name, default, setting, result):
     os.environ[name] = str(setting)
-    assert biodome(name, default) == result
+    assert biodome.biodome(name, default) == result
 
 
 @pytest.mark.skipif(sys.version_info < (3, 0), reason="requires Python 3+")
@@ -98,7 +99,8 @@ def test_param_set(name, default, setting, result):
 def test_param(name, default, setting, result):
     """ast.literal_eval is only supported in Python 3"""
     os.environ[name] = str(setting)
-    assert biodome(name, default) == result
+    assert biodome.biodome(name, default) == result
+
 
 @pytest.mark.parametrize('name,cast,setting,result', [
     ('X', bool, 'blah', False),
@@ -128,7 +130,8 @@ def test_param(name, default, setting, result):
 ])
 def test_cast(name, cast, setting, result):
     os.environ[name] = str(setting)
-    assert biodome(name, cast=cast) == result
+    assert biodome.biodome(name, cast=cast) == result
+
 
 @pytest.mark.skipif(sys.version_info < (3, 0), reason="requires Python 3+")
 @pytest.mark.parametrize('name,cast,setting,result', [
@@ -136,7 +139,8 @@ def test_cast(name, cast, setting, result):
 ])
 def test_cast_set(name, cast, setting, result):
     os.environ[name] = str(setting)
-    assert biodome(name, cast=cast) == result
+    assert biodome.biodome(name, cast=cast) == result
+
 
 @pytest.mark.parametrize('name,default,setting,result', [
     ('X', [], 'list(1,2,3)', [1, 2, 3]),
@@ -146,5 +150,44 @@ def test_cast_set(name, cast, setting, result):
 def test_noeval(name, default, setting, result):
     """Verify that no code evaluation occurs"""
     os.environ[name] = str(setting)
-    assert biodome(name, default=default) != result
-    assert biodome(name, default=default) == default
+    assert biodome.biodome(name, default=default) != result
+    assert biodome.biodome(name, default=default) == default
+
+
+def test_environ_set():
+    assert 'blah' not in os.environ
+    biodome.environ['blah'] = '123'
+    assert 'blah' in os.environ
+    assert os.environ.get('blah') == '123'
+    del biodome.environ['blah']
+    assert 'blah' not in os.environ
+
+
+def test_environ_int():
+    assert not os.environ.get('blah')
+    biodome.environ['blah'] = 123
+
+    # Both ways work
+    assert os.environ['blah'] == '123'
+    assert biodome.environ['blah'] == '123'
+
+    # NOTE: we get an int out because the default is type int
+    assert biodome.environ.get('blah', default=0) == 123
+
+    del biodome.environ['blah']
+    assert 'blah' not in os.environ
+
+
+def test_environ_types():
+    assert not os.environ.get('blah')
+    biodome.environ['blah'] = dict(a=1, b=2, c=[1, 2, {1, 2}])
+
+    # Both ways work
+    assert os.environ['blah'] == "{'a': 1, 'b': 2, 'c': [1, 2, {1, 2}]}"
+    assert biodome.environ['blah'] == "{'a': 1, 'b': 2, 'c': [1, 2, {1, 2}]}"
+
+    # NOTE: we get an int out because the default is type int
+    assert biodome.environ.get('blah', default={}) == dict(a=1, b=2, c=[1, 2, {1, 2}])
+
+    del biodome.environ['blah']
+    assert 'blah' not in os.environ
