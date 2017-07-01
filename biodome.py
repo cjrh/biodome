@@ -10,10 +10,10 @@ import logging
 import ast
 try:
     # Python 3
-    from collections import UserDict
-except ImportError:
+    from collections import UserDict  # pragma: no cover
+except ImportError:  # pragma: no cover
     # Python 2
-    from UserDict import IterableUserDict as UserDict
+    from UserDict import IterableUserDict as UserDict  # pragma: no cover
 from typing import Any
 
 __version__ = '2017.6.4'
