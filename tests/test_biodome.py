@@ -185,7 +185,7 @@ def test_environ_types():
     assert not os.environ.get('blah')
     biodome.environ['blah'] = dict(a=[1, 2, {1}])
 
-    rep = "{'a': [1, 2, {1}]}" if PY2 else "{'a': [1, 2, set([1])]}"
+    rep = "{'a': [1, 2, {1}]}" if not PY2 else "{'a': [1, 2, set([1])]}"
 
     # Both ways work - old and new
     assert os.environ['blah'] == rep
