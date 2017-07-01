@@ -56,7 +56,7 @@ of different things:
     biodome.environ.get('SETTINGS', {}) == dict(a=1, b=2)
 
 If you look carefully at the above, you can see that we *set* the data via
-the stdlib ``os.environ`` dictionary; that's right, ``biodome`` is a
+the stdlib ``os.environ`` dictionary; that's right, ``biodome.environ`` is a
 **drop-in replacement** for ``os.environ``. You don't even have to switch out
 your entire codebase, you can do it piece by piece.
 
