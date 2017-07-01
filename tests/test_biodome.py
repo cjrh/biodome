@@ -178,6 +178,7 @@ def test_environ_int():
     assert 'blah' not in os.environ
 
 
+@pytest.mark.skipif(sys.version_info < (3, 0), reason="requires Python 3+")
 def test_environ_types():
     assert not os.environ.get('blah')
     biodome.environ['blah'] = dict(a=[1, 2, {1}])
@@ -185,6 +186,23 @@ def test_environ_types():
     # Both ways work
     assert os.environ['blah'] == "{'a': [1, 2, {1}]}"
     assert biodome.environ['blah'] == "{'a': [1, 2, {1}]}"
+
+    # NOTE: we get an int out because the default is type int
+    biodome.environ['blah'] = dict(a=1, b=2, c=[1, 2, {1, 2}])
+    assert biodome.environ.get('blah', default={}) == dict(a=1, b=2, c=[1, 2, {1, 2}])
+
+    del biodome.environ['blah']
+    assert 'blah' not in os.environ
+
+
+@pytest.mark.skipif(sys.version_info >= (3, 0), reason="requires Python 2.7")
+def test_environ_types_python2():
+    assert not os.environ.get('blah')
+    biodome.environ['blah'] = dict(a=[1, 2, {1}])
+
+    # Both ways work
+    assert os.environ['blah'] == "[1, 2, set([1])]"
+    assert biodome.environ['blah'] == "[1, 2, set([1])]"
 
     # NOTE: we get an int out because the default is type int
     biodome.environ['blah'] = dict(a=1, b=2, c=[1, 2, {1, 2}])
