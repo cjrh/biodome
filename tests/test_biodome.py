@@ -5,6 +5,9 @@ from biodome import biodome
 import biodome
 
 
+PY2 = sys.version_info < (3, 0)
+
+
 def test_missing():
     assert biodome.biodome('BLAH') is None
 
@@ -91,7 +94,7 @@ def test_param_set(name, default, setting, result):
     assert biodome.biodome(name, default) == result
 
 
-@pytest.mark.skipif(sys.version_info < (3, 0), reason="requires Python 3+")
+@pytest.mark.skipif(PY2, 0), reason="requires Python 3+")
 @pytest.mark.parametrize('name,default,setting,result', [
     ('X', {1, 2, 3}, '{1, 2}', {1, 2}),
     ('X', {1, 2, 3}, '{"1":2}', {1, 2, 3}),
@@ -133,7 +136,7 @@ def test_cast(name, cast, setting, result):
     assert biodome.biodome(name, cast=cast) == result
 
 
-@pytest.mark.skipif(sys.version_info < (3, 0), reason="requires Python 3+")
+@pytest.mark.skipif(PY2, reason="requires Python 3+")
 @pytest.mark.parametrize('name,cast,setting,result', [
     ('X', set, '{2}', {2}),
 ])
@@ -182,8 +185,9 @@ def test_environ_types():
     assert not os.environ.get('blah')
     biodome.environ['blah'] = dict(a=[1, 2, {1}])
 
-    # Both ways work
-    rep = "{'a': [1, 2, {1}]}" if sys.version_info >= (3, 0) else "[1, 2, set([1])]"
+    rep = "{'a': [1, 2, {1}]}" if PY2 else "{'a': [1, 2, set([1])]}"
+
+    # Both ways work - old and new
     assert os.environ['blah'] == rep
     assert biodome.environ['blah'] == rep
 
