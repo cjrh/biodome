@@ -6,11 +6,8 @@ python:
   - "3.6"
   - "nightly" # currently points to 3.7-dev
 install:
-    - "pip install typing"
-    - "pip install pytest"
-    - "pip install pytest-cov"
-    - "pip install coveralls"
+    - "pip install -r requirements.txt"
 script:
-    py.test --cov biodome tests/
+    PYTHONPATH=. py.test --cov biodome tests/
 after_success:
     coveralls
