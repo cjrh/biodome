@@ -183,17 +183,16 @@ def test_environ_int():
 
 def test_environ_types():
     assert not os.environ.get('blah')
-    biodome.environ['blah'] = dict(a=[1, 2, {1}])
+    biodome.environ['blah'] = dict(a=[1, 2, 3])
 
-    rep = "{'a': [1, 2, {1}]}" if not PY2 else "{'a': [1, 2, set([1])]}"
+    rep = "{'a': [1, 2, 3]}"
 
     # Both ways work - old and new
     assert os.environ['blah'] == rep
     assert biodome.environ['blah'] == rep
 
     # NOTE: we get an int out because the default is type int
-    biodome.environ['blah'] = dict(a=1, b=2, c=[1, 2, {1, 2}])
-    assert biodome.environ.get('blah', default={}) == dict(a=1, b=2, c=[1, 2, {1, 2}])
+    assert biodome.environ.get('blah', default={}) == dict(a=[1, 2, 3])
 
     del biodome.environ['blah']
     assert 'blah' not in os.environ
