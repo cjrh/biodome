@@ -16,7 +16,7 @@ except ImportError:  # pragma: no cover
     from UserDict import IterableUserDict as UserDict  # pragma: no cover
 from typing import Any
 
-__version__ = '2017.6.4'
+__version__ = '2017.6.5'
 logger = logging.getLogger(__name__)
 
 
