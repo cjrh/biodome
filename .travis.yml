@@ -7,10 +7,12 @@ python:
   - "nightly" # currently points to 3.7-dev
 # command to run tests
 install:
+    - "pip install flit"
+    - "flit install"
     - "pip install pytest"
     - "pip install pytest-cov"
     - "pip install coveralls"
 script:
-    PYTHONPATH=. py.test --cov biodome tests/
+    py.test --cov biodome tests/
 after_success:
     coveralls
