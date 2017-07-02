@@ -10,6 +10,8 @@
 .. image:: https://img.shields.io/pypi/pyversions/arglog.svg
     :target: https://pypi.python.org/pypi/arglog
 
+.. image:: https://img.shields.io/github/tag/cjrh/biodome.svg
+
 biodome
 =======
 
