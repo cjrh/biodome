@@ -7,8 +7,8 @@
 .. image:: https://coveralls.io/repos/github/cjrh/biodome/badge.svg?branch=master
     :target: https://coveralls.io/github/cjrh/biodome?branch=master
 
-.. image:: https://img.shields.io/pypi/pyversions/arglog.svg
-    :target: https://pypi.python.org/pypi/arglog
+.. image:: https://img.shields.io/pypi/pyversions/biodome.svg
+    :target: https://pypi.python.org/pypi/biodome
 
 .. image:: https://img.shields.io/github/tag/cjrh/biodome.svg
 
