@@ -11,8 +11,10 @@
     :target: https://pypi.python.org/pypi/biodome
 
 .. image:: https://img.shields.io/github/tag/cjrh/biodome.svg
+    :target: https://img.shields.io/github/tag/cjrh/biodome.svg
 
 .. image:: https://img.shields.io/badge/install-pip%20install%20biodome-ff69b4.svg
+    :target: https://img.shields.io/badge/install-pip%20install%20biodome-ff69b4.svg
 
 biodome
 =======
