@@ -8,15 +8,21 @@ Controlled environments.
 import os
 import logging
 import ast
+import typing
+import functools
 try:
     # Python 3
     from collections import UserDict  # pragma: no cover
 except ImportError:  # pragma: no cover
     # Python 2
     from UserDict import IterableUserDict as UserDict  # pragma: no cover
-from typing import Any
 
-__version__ = '2017.6.5'
+
+if typing.TYPE_CHECKING:  # pragma: no cover
+    from typing import Callable, Any
+
+
+__version__ = '2017.8.1'
 logger = logging.getLogger(__name__)
 
 
@@ -55,7 +61,14 @@ class _Environ(UserDict):
         self.data = os.environ
 
     def get(self, key, default=None, cast=None):
+        # type: (str, Any, Callable) -> Callable
         return biodome(key, default, cast)
+
+    def get_callable(self, key, default=None, cast=None):
+        # type: (str, Any, Callable) -> Callable[[None], None]
+        return functools.partial(
+            self.get, key, default=default, cast=cast,
+        )
 
     def __setitem__(self, key, value):
         os.environ[key] = str(value)

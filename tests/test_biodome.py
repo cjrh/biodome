@@ -196,3 +196,10 @@ def test_environ_types():
 
     del biodome.environ['blah']
     assert 'blah' not in os.environ
+
+
+def test_callable():
+    assert not os.environ.get('MY_SETTING')
+    biodome.environ['MY_SETTING'] = dict(a=[1, 2, 3])
+    MY_SETTING = biodome.environ.get_callable('MY_SETTING', {})
+    assert MY_SETTING() == dict(a=[1, 2, 3])

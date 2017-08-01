@@ -100,8 +100,45 @@ recognized as ``True``:
 Anything not in this list will be considered as ``False``.  Do you have ideas
 for more things that should be considered as ``True``? I take PRs!
 
-How it works
-------------
+Callables
+---------
+
+For explictness it is often convenient to declare and load environment
+variables at the top of the module in which they're used:
+
+.. code:: python
+
+    """ My new module """
+    import biodome
+
+    ENABLE_SETTING_XYZ = biodome.environ.get('ENABLE_SETTING_XYZ', True)
+
+    def blah():
+        print(ENABLE_SETTING_XYZ)
+
+You *could* call ``environ.get()`` inside the functions and methods where it
+is used, but then you would lose the convenience of documenting all the
+available environment variables at the top of the module.  As a solution to
+this problem, *biodome* provides a way to produce a callable for a particular
+setting.  An extra advantage of doing this is that it becomes quite easy to
+make use of changes in environment variables on the fly.  Here's the
+modified example:
+
+.. code:: python
+
+    """ My new module """
+    import biodome
+
+    ENABLE_SETTING_XYZ = biodome.environ.get_callable(
+        # Same as before
+        'ENABLE_SETTING_XYZ', True
+        )
+
+    def blah():
+        print(ENABLE_SETTING_XYZ())  # Now a callable!
+
+How it works internally
+-----------------------
 
 The key theme here is that the *type* of the default value is used to determine
 how to cast the input value.  This works for the following types:
