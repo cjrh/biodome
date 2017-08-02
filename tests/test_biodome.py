@@ -1,7 +1,6 @@
 import os
 import sys
 import pytest
-from biodome import biodome
 import biodome
 
 
@@ -203,3 +202,23 @@ def test_callable():
     biodome.environ['MY_SETTING'] = dict(a=[1, 2, 3])
     MY_SETTING = biodome.environ.get_callable('MY_SETTING', {})
     assert MY_SETTING() == dict(a=[1, 2, 3])
+
+
+def test_env_changer_new():
+    assert 'BLAH' not in biodome.environ
+
+    with biodome.env_change('BLAH', 123):
+        assert biodome.environ.get('BLAH', 0) == 123
+
+    assert 'BLAH' not in biodome.environ
+
+
+def test_env_changer_existing():
+    biodome.environ['BLAH'] = 456
+
+    with biodome.env_change('BLAH', 123):
+        assert biodome.environ.get('BLAH', 0) == 123
+
+    assert biodome.environ.get('BLAH', 0) == 456
+    del biodome.environ['BLAH']
+

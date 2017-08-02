@@ -10,6 +10,7 @@ import logging
 import ast
 import typing
 import functools
+import contextlib
 try:
     # Python 3
     from collections import UserDict  # pragma: no cover
@@ -22,7 +23,7 @@ if typing.TYPE_CHECKING:  # pragma: no cover
     from typing import Callable, Any
 
 
-__version__ = '2017.8.1'
+__version__ = '2017.8.2'
 logger = logging.getLogger(__name__)
 
 
@@ -75,3 +76,24 @@ class _Environ(UserDict):
 
 
 environ = _Environ()
+
+
+@contextlib.contextmanager
+def env_change(name, value):
+    """Context manager to temporarily change the value of an env var."""
+    # TODO: move this upstream to the biodome package
+    if name in environ:
+        old = environ[name]
+
+        def reset():
+            environ[name] = old
+
+    else:
+        def reset():
+            del environ[name]
+
+    try:
+        environ[name] = value
+        yield
+    finally:
+        reset()
