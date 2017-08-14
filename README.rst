@@ -19,6 +19,9 @@
 .. image:: https://img.shields.io/pypi/v/biodome.svg
     :target: https://img.shields.io/pypi/v/biodome.svg
 
+.. image:: https://img.shields.io/badge/calver-YYYY.MM.MINOR-22bfda.svg
+    :target: http://calver.org/
+
 biodome
 =======
 
