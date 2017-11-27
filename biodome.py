@@ -60,6 +60,7 @@ def biodome(name, default=None, cast=None):
 class _Environ(UserDict):
     def __init__(self, *args, **kwargs):
         self.data = os.environ
+        self.callbacks = {}
 
     def get(self, key, default=None, cast=None):
         # type: (str, Any, Callable) -> Callable
@@ -70,6 +71,10 @@ class _Environ(UserDict):
         return functools.partial(
             self.get, key, default=default, cast=cast,
         )
+
+    def register_callback(self, key, callback):
+        # type: (str, Callable)
+
 
     def __setitem__(self, key, value):
         os.environ[key] = str(value)
