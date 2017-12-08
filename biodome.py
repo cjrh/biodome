@@ -55,7 +55,7 @@ def biodome(name, default=None, cast=None):
         return type_(raw_value)
     except:
         logger.error(
-            'Env var %s: cast "%s" to tyoe %s failed. The default will be'
+            'Env var %s: cast "%s" to type %s failed. The default will be'
             'used.', name, raw_value, str(type_)
         )
         return default
