@@ -33,6 +33,10 @@ def biodome(name, default=None, cast=None):
     if raw_value is None:
         return default
 
+    if default is None and cast is None:
+        # No type information. Just pass through.
+        return raw_value
+
     raw_value = raw_value.strip()
 
     # Use the same type as default as the cast

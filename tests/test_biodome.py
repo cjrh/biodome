@@ -204,6 +204,12 @@ def test_callable():
     assert MY_SETTING() == dict(a=[1, 2, 3])
 
 
+def test_callable_int():
+    os.environ['MY_SETTING2'] = '5'
+    MY_SETTING2 = biodome.environ.get('MY_SETTING2')
+    assert MY_SETTING2 == '5'
+
+
 def test_env_changer_new():
     assert 'BLAH' not in biodome.environ
 
