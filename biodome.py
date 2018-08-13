@@ -37,7 +37,7 @@ if typing.TYPE_CHECKING:  # pragma: no cover
     from typing import Callable, Any
 
 
-__version__ = '2017.12.1'
+__version__ = '2018.8.1'
 logger = logging.getLogger(__name__)
 
 
