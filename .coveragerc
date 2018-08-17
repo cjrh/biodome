@@ -1,5 +1,8 @@
 [run]
 branch = True
+source =
+    biodome
+    tests\
 
 [report]
 exclude_lines =

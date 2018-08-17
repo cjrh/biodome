@@ -157,9 +157,3 @@ how to cast the input value.  This works for the following types:
 For the containers, we use ``ast.literal_eval()`` which is much safer than
 using ``eval()`` because code is not evaluated. Safety first! (thanks to
 @nickdirienzo for the tip)
-
-.. raw:: html
-
-    <a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/9JgR2GbF3LNvNXP1qHecTov1/cjrh/biodome'>
-      <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/9JgR2GbF3LNvNXP1qHecTov1/cjrh/biodome.svg' />
-    </a>
