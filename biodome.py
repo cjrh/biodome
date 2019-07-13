@@ -115,3 +115,42 @@ def env_change(name, value):
         yield
     finally:
         reset()
+
+
+def load_env_file(path, raises=False):
+    # type: (str, bool) -> None
+    """
+    Load an file which specifies the values of environment variables. An
+    example:
+
+        # This sets the log level for all the loggers in the program
+        LOGGER_LEVEL=info
+
+        # Hourly backups are stored at this path and named with a timestamp.
+        BACKUP_PATH=/data/backups/
+
+        # The number of times to retry outgoing HTTP requests if the status
+        # code is > 500
+        RETRY_TIME=5
+
+
+    The name of the environment variable must be on the left and the value
+    on the right. Each variable must be on its own line. Lines starting with
+    a # are considered comments and are ignored.
+
+    :raises - If true, this method with raise if there is no file at the
+        specified path. If false, the method will return having done nothing.
+    """
+    try:
+        with open(path) as f:
+            for line in f:
+                line = line.strip()
+                if not line or line[0] == '#':
+                    continue
+                name, _, value = line.partition('=')
+                name = name.strip()
+                value = value.strip()
+                environ[name] = value
+    except FileNotFoundError:
+        if raises:
+            raise

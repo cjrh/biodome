@@ -1,5 +1,13 @@
 import os
 import sys
+try:
+    # Python 3
+    from contextlib import ExitStack
+except ImportError:
+    from contextlib2 import ExitStack
+from copy import deepcopy
+from uuid import uuid4
+
 import pytest
 import biodome
 
@@ -228,3 +236,27 @@ def test_env_changer_existing():
     assert biodome.environ.get('BLAH', 0) == 456
     del biodome.environ['BLAH']
 
+
+def test_loading_file(tmp_path):
+    name = str(uuid4()) + '.env'
+    p = tmp_path / name
+    p.write_text('# This is a comment\nX_SET=123')
+    expected = deepcopy(biodome.environ.data._data)
+    expected[b'X_SET'] = b'123'
+
+    biodome.load_env_file(p)
+    actual = biodome.environ.data._data
+    assert actual == expected
+    assert biodome.environ.get('X_SET') == '123'
+
+
+@pytest.mark.parametrize('raises, context', [
+    (True, pytest.raises(FileNotFoundError)),
+    (False, ExitStack())
+])
+def test_loading_missing_file(tmp_path, raises, context):
+    p = str(tmp_path) + str(uuid4()) + '.env'
+    before = deepcopy(biodome.environ.data._data)
+    with context:
+        biodome.load_env_file(p, raises)
+    assert biodome.environ.data._data == before
