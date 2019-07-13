@@ -25,13 +25,15 @@ import ast
 import typing
 import functools
 import contextlib
+
+import errno
+
 try:
     # Python 3
     from collections import UserDict  # pragma: no cover
 except ImportError:  # pragma: no cover
     # Python 2
     from UserDict import IterableUserDict as UserDict  # pragma: no cover
-
 
 if typing.TYPE_CHECKING:  # pragma: no cover
     from typing import Callable, Any
@@ -151,6 +153,8 @@ def load_env_file(path, raises=False):
                 name = name.strip()
                 value = value.strip()
                 environ[name] = value
-    except FileNotFoundError:
-        if raises:
+    except IOError as e:
+        # Python 3 raises a FileNotFound and python 2 an IOError. So we can
+        # check the error number to see if it was a missing file.
+        if e.errno != errno.ENOENT or raises:
             raise
