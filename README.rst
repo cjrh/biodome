@@ -85,6 +85,36 @@ unlike ``os.environ``:
     biodome.environ['SETTINGS'] = dict(b=2, a=1)  # No cast required
     biodome.environ.get('SETTINGS', {}) == dict(a=1, b=2)
 
+Loading env files
+-----------------
+
+``biodome`` also provides a function to load a file which specifies the
+values of environment variables. An example of such an *env* file::
+
+    # myconfig.env
+    # This sets the log level for all the loggers in the program
+    LOGGER_LEVEL=info
+
+    # Hourly backups are stored at this path and named with a timestamp.
+    BACKUP_PATH=/data/backups/
+
+    # The number of times to retry outgoing HTTP requests if the status
+    # code is > 500
+    RETRY_TIME=5
+
+The name of the environment variable must be on the left and the value
+on the right. Each variable must be on its own line. Lines starting with
+a ``#`` are considered comments and are ignored.
+
+This *env* file can be loaded like this:
+
+.. code-block:: python
+
+    >>> import biodome
+    >>> biodome.load_env_file('myconfig.env')
+    >>> print(biodome.environ['RETRY_TIME'])
+    5
+
 True and False
 --------------
 

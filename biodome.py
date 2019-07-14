@@ -19,14 +19,13 @@ Controlled environments.
    limitations under the License.
 
 """
-import os
-import logging
 import ast
-import typing
-import functools
 import contextlib
-
 import errno
+import functools
+import logging
+import os
+import typing
 
 try:
     # Python 3
@@ -39,7 +38,7 @@ if typing.TYPE_CHECKING:  # pragma: no cover
     from typing import Callable, Any
 
 
-__version__ = '2018.8.3'
+__version__ = "2019.7.1"
 logger = logging.getLogger(__name__)
 
 
@@ -60,8 +59,17 @@ def biodome(name, default=None, cast=None):
 
     if bool in (cast, type_):
         return raw_value.lower() in (
-            '1', 'y', 'yes', 'on', 'active', 'activated', 'enabled', 'true',
-            't', 'ok', 'yeah',
+            "1",
+            "y",
+            "yes",
+            "on",
+            "active",
+            "activated",
+            "enabled",
+            "true",
+            "t",
+            "ok",
+            "yeah",
         )
 
     try:
@@ -71,8 +79,10 @@ def biodome(name, default=None, cast=None):
         return type_(raw_value)
     except:
         logger.error(
-            'Env var %s: cast "%s" to type %s failed. The default will be'
-            'used.', name, raw_value, str(type_)
+            'Env var %s: cast "%s" to type %s failed. The default will be' "used.",
+            name,
+            raw_value,
+            str(type_),
         )
         return default
 
@@ -87,9 +97,7 @@ class _Environ(UserDict):
 
     def get_callable(self, key, default=None, cast=None):
         # type: (str, Any, Callable) -> Callable[[None], None]
-        return functools.partial(
-            self.get, key, default=default, cast=cast,
-        )
+        return functools.partial(self.get, key, default=default, cast=cast)
 
     def __setitem__(self, key, value):
         os.environ[key] = str(value)
@@ -109,6 +117,7 @@ def env_change(name, value):
             environ[name] = old
 
     else:
+
         def reset():
             del environ[name]
 
@@ -147,9 +156,9 @@ def load_env_file(path, raises=False):
         with open(path) as f:
             for line in f:
                 line = line.strip()
-                if not line or line[0] == '#':
+                if not line or line[0] == "#":
                     continue
-                name, _, value = line.partition('=')
+                name, _, value = line.partition("=")
                 name = name.strip()
                 value = value.strip()
                 environ[name] = value
