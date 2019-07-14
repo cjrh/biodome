@@ -1,5 +1,9 @@
 import os
 import sys
+
+from copy import deepcopy
+from uuid import uuid4
+
 import pytest
 import biodome
 
@@ -228,3 +232,29 @@ def test_env_changer_existing():
     assert biodome.environ.get('BLAH', 0) == 456
     del biodome.environ['BLAH']
 
+
+def test_loading_file(tmpdir):
+    p = tmpdir.join(str(uuid4()) + '.env')
+    p.write_text(u'# This is a comment\nX_SET=123', 'utf8')
+    expected = deepcopy(biodome.environ.data)
+    expected['X_SET'] = '123'
+
+    biodome.load_env_file(str(p))
+    actual = biodome.environ.data
+    assert actual == expected
+    assert biodome.environ.get('X_SET', 1) == 123
+
+
+def test_loading_missing_file(tmpdir):
+    p = str(tmpdir) + str(uuid4()) + '.env'
+    before = deepcopy(biodome.environ.data)
+    biodome.load_env_file(str(p))
+    assert biodome.environ.data == before
+
+
+def test_loading_missing_file_raises(tmpdir):
+    p = str(tmpdir) + str(uuid4()) + '.env'
+    before = deepcopy(biodome.environ.data)
+    with pytest.raises(IOError):
+        biodome.load_env_file(str(p), raises=True)
+    assert biodome.environ.data == before
