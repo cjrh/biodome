@@ -1,8 +1,8 @@
 .. image:: https://img.shields.io/badge/stdlib--only-yes-green.svg
     :target: https://img.shields.io/badge/stdlib--only-yes-green.svg
 
-.. image:: https://travis-ci.org/cjrh/biodome.svg?branch=master
-    :target: https://travis-ci.org/cjrh/biodomebiodome
+.. image:: https://github.com/cjrh/biodome/workflows/Python%20application/badge.svg
+    :target: https://github.com/cjrh/biodome/actions
 
 .. image:: https://coveralls.io/repos/github/cjrh/biodome/badge.svg?branch=master
     :target: https://coveralls.io/github/cjrh/biodome?branch=master
