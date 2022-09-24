@@ -26,7 +26,7 @@ import errno
 import functools
 import logging
 import os
-from collections import UserDict  # pragma: no cover
+from collections import UserDict
 import typing
 
 
@@ -42,24 +42,18 @@ logger = logging.getLogger(__name__)
 
 
 @typing.overload
-def biodome(name: str) -> str|None:
-    ...
+def biodome(name: str) -> str|None: ...  # pragma: no cover
 @typing.overload
-def biodome(name: str, default: None) -> str|None:
-    ...
+def biodome(name: str, default: None) -> str|None: ...  # pragma: no cover
 @typing.overload
-def biodome(name: str, *, cast: None) -> str|None:
-    ...
+def biodome(name: str, *, cast: None) -> str|None: ...  # pragma: no cover
 @typing.overload
-def biodome(name: str, default: T) -> T:
-    ...
+def biodome(name: str, default: T) -> T: ...  # pragma: no cover
 @typing.overload
-def biodome(name: str, *, cast: Callable[[str|None], T]) -> T:
-    ...
+def biodome(name: str, *, cast: Callable[[str|None], T]) -> T: ...  # pragma: no cover
 # Finally, the full sig to work with callers that provide everything
 @typing.overload
-def biodome(name: str, default: T|None = None, *, cast: None|Callable[[str|None], T] = None) -> T|str|None:
-    ...
+def biodome(name: str, default: T|None = None, *, cast: None|Callable[[str|None], T] = None) -> T|str|None: ...  # pragma: no cover
 def biodome(name, default=None, *, cast=None):
     raw_value = os.environ.get(name)
     if default is None and cast is None:
@@ -114,45 +108,33 @@ class _Environ(UserDict):
         self.data = os.environ
 
     @typing.overload
-    def get(self, key: str) -> str|None:
-        ...
+    def get(self, key: str) -> str|None: ...  # pragma: no cover
     @typing.overload
-    def get(self, key: str, default: None) -> str|None:
-        ...
+    def get(self, key: str, default: None) -> str|None: ...  # pragma: no cover
     @typing.overload
-    def get(self, key: str, *, cast: None) -> str|None:
-        ...
+    def get(self, key: str, *, cast: None) -> str|None: ...  # pragma: no cover
     @typing.overload
-    def get(self, key: str, default: T) -> T:
-        ...
+    def get(self, key: str, default: T) -> T: ...  # pragma: no cover
     @typing.overload
-    def get(self, key: str, *, cast: Callable[[str|None], T]) -> T:
-        ...
+    def get(self, key: str, *, cast: Callable[[str|None], T]) -> T: ...  # pragma: no cover
     @typing.overload
-    def get(self, key: str, default: T|None = None, *, cast: None|Callable[[str|None], T] = None) -> T|str|None:
-        ...
+    def get(self, key: str, default: T|None = None, *, cast: None|Callable[[str|None], T] = None) -> T|str|None: ...  # pragma: no cover
     def get(self, key, default=None, *, cast=None) -> T|str|None:
         return biodome(key, default, cast=cast)
 
     @typing.overload
-    def get_callable(self, key: str) -> Callable[[], str|None]:
-        ...
+    def get_callable(self, key: str) -> Callable[[], str|None]: ...  # pragma: no cover
     @typing.overload
-    def get_callable(self, key: str, default: None) -> Callable[[], str|None]:
-        ...
+    def get_callable(self, key: str, default: None) -> Callable[[], str|None]: ...  # pragma: no cover
     @typing.overload
-    def get_callable(self, key: str, *, cast: None) -> Callable[[], str|None]:
-        ...
+    def get_callable(self, key: str, *, cast: None) -> Callable[[], str|None]: ...  # pragma: no cover
     @typing.overload
-    def get_callable(self, key: str, default: T) -> Callable[[], T]:
-        ...
+    def get_callable(self, key: str, default: T) -> Callable[[], T]: ...  # pragma: no cover
     @typing.overload
-    def get_callable(self, key: str, *, cast: Callable[[str|None], T]) -> Callable[[], T]:
-        ...
+    def get_callable(self, key: str, *, cast: Callable[[str|None], T]) -> Callable[[], T]: ...  # pragma: no cover
     # Finally, the full sig to work with callers that provide everything
     @typing.overload
-    def get_callable(self, key: str, default: T|None = None, *, cast: None|Callable[[str|None], T] = None) -> Callable[[], T|str|None]:
-        ...
+    def get_callable(self, key: str, default: T|None = None, *, cast: None|Callable[[str|None], T] = None) -> Callable[[], T|str|None]: ...  # pragma: no cover
     def get_callable(self, key, default=None, cast=None) -> Callable[[], T|str|None]:
         return functools.partial(self.get, key, default=default, cast=cast)
 
@@ -211,7 +193,7 @@ def load_env_file(path, raises=False):
     """
     try:
         with open(path) as f:
-            for line in f:
+            for line in f:  # pragma: no branch
                 line = line.strip()
                 if not line or line[0] == "#":
                     continue

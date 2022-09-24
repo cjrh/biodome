@@ -245,6 +245,16 @@ def test_loading_file(tmpdir):
     assert biodome.environ.get('X_SET', 1) == 123
 
 
+def test_loading_empty_file(tmpdir):
+    p = tmpdir.join(str(uuid4()) + '.env')
+    p.write('')
+    expected = deepcopy(biodome.environ.data)
+
+    biodome.load_env_file(str(p))
+    actual = biodome.environ.data
+    assert actual == expected
+
+
 def test_loading_missing_file(tmpdir):
     p = str(tmpdir) + str(uuid4()) + '.env'
     before = deepcopy(biodome.environ.data)
@@ -258,3 +268,18 @@ def test_loading_missing_file_raises(tmpdir):
     with pytest.raises(IOError):
         biodome.load_env_file(str(p), raises=True)
     assert biodome.environ.data == before
+
+
+def test_incompatible_arguments():
+    with pytest.raises(ValueError):
+        x = biodome.environ.get('ABC', default=1, cast=bool)
+
+
+def test_cast_missing():
+    x = biodome.environ.get('MISSING', cast=lambda value: 0 if value is None else int(value))
+    assert x == 0
+
+
+def test_default_missing():
+    x = biodome.environ.get('MISSING', default=123)
+    assert x == 123
