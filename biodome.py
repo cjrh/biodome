@@ -33,7 +33,7 @@ import typing
 if typing.TYPE_CHECKING:  # pragma: no cover
     from typing import Callable, TypeVar, ParamSpec
 
-    T = TypeVar('T', str, list, dict, int, float, set, bool)
+    T = TypeVar('T', str, list, dict, int, float, set, bool, tuple)
     P = ParamSpec('P')
 
 
