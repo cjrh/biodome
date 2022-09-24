@@ -19,38 +19,60 @@ Controlled environments.
    limitations under the License.
 
 """
+from __future__ import annotations
 import ast
 import contextlib
 import errno
 import functools
 import logging
 import os
+from collections import UserDict  # pragma: no cover
 import typing
 
-try:
-    # Python 3
-    from collections import UserDict  # pragma: no cover
-except ImportError:  # pragma: no cover
-    # Python 2
-    from UserDict import IterableUserDict as UserDict  # pragma: no cover
 
 if typing.TYPE_CHECKING:  # pragma: no cover
-    from typing import Callable, Any
+    from typing import Callable, TypeVar, ParamSpec
+
+    T = TypeVar('T', str, list, dict, int, float, set, bool)
+    P = ParamSpec('P')
 
 
 __version__ = "2021.10.1"
 logger = logging.getLogger(__name__)
 
 
-def biodome(name, default=None, cast=None):
-    # type: (str, Any, Callable) -> Any
+@typing.overload
+def biodome(name: str) -> str|None:
+    ...
+@typing.overload
+def biodome(name: str, default: None) -> str|None:
+    ...
+@typing.overload
+def biodome(name: str, *, cast: None) -> str|None:
+    ...
+@typing.overload
+def biodome(name: str, default: T) -> T:
+    ...
+@typing.overload
+def biodome(name: str, *, cast: Callable[[str|None], T]) -> T:
+    ...
+# Finally, the full sig to work with callers that provide everything
+@typing.overload
+def biodome(name: str, default: T|None = None, *, cast: None|Callable[[str|None], T] = None) -> T|str|None:
+    ...
+def biodome(name, default=None, *, cast=None):
     raw_value = os.environ.get(name)
-    if raw_value is None:
-        return default
-
     if default is None and cast is None:
-        # No type information. Just pass through.
         return raw_value
+
+    if default is not None and cast is not None:
+        raise ValueError("Either default or cast must be provided, not both.")
+
+    if raw_value is None:
+        if default is None and cast is not None:
+            return cast(raw_value)
+        else:
+            return default
 
     raw_value = raw_value.strip()
 
@@ -79,7 +101,7 @@ def biodome(name, default=None, cast=None):
         return type_(raw_value)
     except:
         logger.error(
-            'Env var %s: cast "%s" to type %s failed. The default will be' "used.",
+            'Env var %s: cast "%s" to type %s failed. The default will be used.',
             name,
             raw_value,
             str(type_),
@@ -88,15 +110,50 @@ def biodome(name, default=None, cast=None):
 
 
 class _Environ(UserDict):
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.data = os.environ
 
-    def get(self, key, default=None, cast=None):
-        # type: (str, Any, Callable) -> Callable
-        return biodome(key, default, cast)
+    @typing.overload
+    def get(self, key: str) -> str|None:
+        ...
+    @typing.overload
+    def get(self, key: str, default: None) -> str|None:
+        ...
+    @typing.overload
+    def get(self, key: str, *, cast: None) -> str|None:
+        ...
+    @typing.overload
+    def get(self, key: str, default: T) -> T:
+        ...
+    @typing.overload
+    def get(self, key: str, *, cast: Callable[[str|None], T]) -> T:
+        ...
+    @typing.overload
+    def get(self, key: str, default: T|None = None, *, cast: None|Callable[[str|None], T] = None) -> T|str|None:
+        ...
+    def get(self, key, default=None, *, cast=None) -> T|str|None:
+        return biodome(key, default, cast=cast)
 
-    def get_callable(self, key, default=None, cast=None):
-        # type: (str, Any, Callable) -> Callable[[None], None]
+    @typing.overload
+    def get_callable(self, key: str) -> Callable[[], str|None]:
+        ...
+    @typing.overload
+    def get_callable(self, key: str, default: None) -> Callable[[], str|None]:
+        ...
+    @typing.overload
+    def get_callable(self, key: str, *, cast: None) -> Callable[[], str|None]:
+        ...
+    @typing.overload
+    def get_callable(self, key: str, default: T) -> Callable[[], T]:
+        ...
+    @typing.overload
+    def get_callable(self, key: str, *, cast: Callable[[str|None], T]) -> Callable[[], T]:
+        ...
+    # Finally, the full sig to work with callers that provide everything
+    @typing.overload
+    def get_callable(self, key: str, default: T|None = None, *, cast: None|Callable[[str|None], T] = None) -> Callable[[], T|str|None]:
+        ...
+    def get_callable(self, key, default=None, cast=None) -> Callable[[], T|str|None]:
         return functools.partial(self.get, key, default=default, cast=cast)
 
     def __setitem__(self, key, value):
