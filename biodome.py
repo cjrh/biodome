@@ -37,7 +37,7 @@ if typing.TYPE_CHECKING:  # pragma: no cover
     P = ParamSpec('P')
 
 
-__version__ = "2021.10.1"
+__version__ = "2022.9.1"
 logger = logging.getLogger(__name__)
 
 
