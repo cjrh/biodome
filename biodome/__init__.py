@@ -27,6 +27,7 @@ import functools
 import logging
 import os
 from collections import UserDict
+from importlib.metadata import PackageNotFoundError, version as _pkg_version
 import typing
 
 
@@ -37,7 +38,10 @@ if typing.TYPE_CHECKING:  # pragma: no cover
     P = ParamSpec('P')
 
 
-__version__ = "2022.9.1"
+try:
+    __version__ = _pkg_version("biodome")
+except PackageNotFoundError:  # pragma: no cover
+    __version__ = "0.0.0+unknown"
 logger = logging.getLogger(__name__)
 
 
