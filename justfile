@@ -19,7 +19,7 @@ coverage:
 
 # Bump + tag + push a release. Pushing a v* tag triggers PyPI publish.
 # Usage: `just release patch` (or minor / major).
-release bump:
+release *bump:
     #!/usr/bin/env bash
     set -euo pipefail
     if [[ -n "$(git status --porcelain)" ]]; then
