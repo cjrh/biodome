@@ -1,14 +1,19 @@
 [build-system]
-requires = ["flit_core >=2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["uv_build>=0.7.19,<0.9"]
+build-backend = "uv_build"
 
-[tool.flit.metadata]
-module = "biodome"
-author = "Caleb Hattingh"
-author-email = "caleb.hattingh@gmail.com"
-home-page = "https://github.com/cjrh/biodome"
+[project]
+name = "biodome"
+version = "2022.9.1"
+description = "Controlled environments"
+readme = "README.rst"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Caleb Hattingh", email = "caleb.hattingh@gmail.com" },
+]
 classifiers = [
-    "License :: OSI Approved :: Apache Software License",
     "Natural Language :: English",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.10",
@@ -18,4 +23,16 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
 ]
-description-file = "README.rst"
+
+[project.urls]
+Homepage = "https://github.com/cjrh/biodome"
+
+[tool.uv.build-backend]
+module-root = ""
+
+[dependency-groups]
+test = [
+    "pytest",
+    "pytest-cov",
+    "coverage",
+]
